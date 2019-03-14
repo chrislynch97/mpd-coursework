@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Coursework</string>
+    <string name="module_name">Mobile Platform Development</string>
+    <string name="down_xml">Downloading XML…</string>
+    <string name="by_student">By Christopher Lynch\nS1511825\nComputing</string>
 </resources>
