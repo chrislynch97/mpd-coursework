@@ -2,11 +2,17 @@ package org.clynch203.gcu.coursework.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
 import org.clynch203.gcu.coursework.R;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -22,28 +28,52 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     private void startDownload() {
-        new DownloadDataAsyncTask().execute();
+        new DownloadTask().execute();
     }
 
-    private class DownloadDataAsyncTask extends AsyncTask<Void, Integer, Void> {
+    private class DownloadTask extends AsyncTask<Void, Integer, Void> {
 
         int progressStatus;
+        URL url;
+        StringBuilder result = new StringBuilder();
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
             progressStatus = 0;
+            try {
+                url = new URL("http://quakes.bgs.ac.uk/feeds/MhSeismology.xml");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            while (progressStatus < 100) {
-                progressStatus += 2;
-                System.out.println(progressStatus);
-                publishProgress(progressStatus);
-                SystemClock.sleep(300);
+            URLConnection connection;
+            BufferedReader in;
+
+            try {
+                connection = url.openConnection();
+                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+                String line;
+                in.readLine();
+                in.readLine();
+                int totalLines = 690; // roughly how many lines are in the XML file. Would use connection.ContentLength() but returns -1
+                while ((line = in.readLine()) != null) {
+                    result.append(line);
+                    progressStatus++;
+                    double d = ((double) progressStatus / (double) totalLines) * 100;
+                    publishProgress((int)d);
+                }
+
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
             return null;
         }
 
@@ -57,6 +87,8 @@ public class LaunchActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+
+            //todo: move to main activity
         }
     }
 
