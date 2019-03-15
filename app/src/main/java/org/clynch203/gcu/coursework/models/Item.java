@@ -1,5 +1,7 @@
 package org.clynch203.gcu.coursework.models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Item {
@@ -11,6 +13,15 @@ public class Item {
     private String category;
     private double lat;
     private double lon;
+    private String location;
+    private double magnitude;
+    private int depth;
+    private Date originDate;
+    private final int id;
+
+    public Item(final int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -66,5 +77,47 @@ public class Item {
 
     public void setLon(double lon) {
         this.lon = lon;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public double getMagnitude() {
+        return magnitude;
+    }
+
+    public void setMagnitude(double magnitude) {
+        this.magnitude = magnitude;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public Date getOriginDate() {
+        return originDate;
+    }
+
+    public void setOriginDate(Date originDate) {
+        this.originDate = originDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getOriginDateString() {
+        String pattern = "EEE, dd MMM yyyy HH:mm:ss";
+        DateFormat format = new SimpleDateFormat(pattern);
+        return format.format(originDate);
     }
 }

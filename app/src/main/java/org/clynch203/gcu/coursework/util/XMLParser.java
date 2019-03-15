@@ -1,9 +1,5 @@
-package org.clynch203.gcu.coursework.activities;
+package org.clynch203.gcu.coursework.util;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-
-import org.clynch203.gcu.coursework.R;
 import org.clynch203.gcu.coursework.models.Channel;
 import org.clynch203.gcu.coursework.models.Image;
 import org.clynch203.gcu.coursework.models.Item;
@@ -16,24 +12,16 @@ import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public abstract class XMLParser {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        String dataToParse = getIntent().getStringExtra("data");
-        Channel channel = parseData(dataToParse);
-    }
-
-    private Channel parseData(String dataToParse) {
+    public static Channel parseData(String dataToParse) {
         Channel channel = null;
         Image image = null;
         Item item = null;
         String pattern = "EEE, dd MMM yyyy HH:mm:ss";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.UK);
 
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -42,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             xpp.setInput(new StringReader(dataToParse));
             int eventType = xpp.getEventType();
             String type = "";
+            int itemCount = 0;
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
                     switch (xpp.getName().toLowerCase()) {
@@ -54,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
                             type = "image";
                             break;
                         case "item":
-                            item = new Item();
+                            item = new Item(itemCount);
+                            itemCount++;
                             type = "item";
                             break;
                         case "title":
@@ -89,7 +79,24 @@ public class MainActivity extends AppCompatActivity {
                                     channel.setDescription(xpp.nextText());
                                     break;
                                 case "item":
-                                    item.setDescription(xpp.nextText());
+                                    String description = xpp.nextText();
+                                    item.setDescription(description);
+
+                                    String[] descriptionItems = description.split(";");
+
+                                    String origin = descriptionItems[0].substring(18);
+                                    Date date = simpleDateFormat.parse(origin);
+                                    item.setOriginDate(date);
+
+                                    String[] location = descriptionItems[1].split(":");
+                                    item.setLocation(location[1].substring(1));
+
+                                    String[] depth = descriptionItems[3].split(":");
+                                    item.setDepth(Integer.parseInt(depth[1].replace("km","").replace(" ", "")));
+
+                                    String[] magnitude = descriptionItems[4].split(":");
+                                    item.setMagnitude(Double.parseDouble(magnitude[1]));
+
                                     break;
                             }
                             break;
@@ -103,18 +110,6 @@ public class MainActivity extends AppCompatActivity {
                         case "lastbuilddate":
                             switch (type) {
                                 case "channel":
-//                                    String[] dateArray = splitDate(xpp.nextText());
-//                                    Month month =
-//                                    LocalDateTime date = LocalDateTime.of(
-//                                            Integer.parseInt(dateArray[3]), //year
-//                                            dateArray[2], // month
-//                                            Integer.parseInt(dateArray[1]), // day
-//                                            Integer.parseInt(dateArray[4]),// hour
-//                                            Integer.parseInt(dateArray[5]),// minute
-//                                            Integer.parseInt(dateArray[6])// second
-//
-//                                    )
-
                                     Date date = simpleDateFormat.parse(xpp.nextText());
                                     channel.setLastBuildDate(date);
                                     break;
@@ -160,13 +155,16 @@ public class MainActivity extends AppCompatActivity {
                 } else if (eventType == XmlPullParser.END_TAG) {
                     switch (xpp.getName().toLowerCase()) {
                         case "channel":
-                            System.out.println(channel.toString());
                             break;
                         case "image":
-                            channel.setImage(image);
+                            if (channel != null) {
+                                channel.setImage(image);
+                            }
                             break;
                         case "item":
-                            channel.addItem(item);
+                            if (channel != null) {
+                                channel.addItem(item);
+                            }
                             break;
                     }
                 }
@@ -182,35 +180,5 @@ public class MainActivity extends AppCompatActivity {
 
         return channel;
     }
-
-//    private String[] splitDate(String dateString) {
-//        String[] dateArray = new String[7];
-//        dateArray[0] = dateString.substring(0, 3); // day of week e.g Thu
-//        dateArray[1] = dateString.substring(5, 7); // day of month e.g. 14
-//        dateArray[2] = dateString.substring(8, 11); // month of year e.g. Mar
-//        dateArray[3] = dateString.substring(12, 16); // year e.g. 2019
-//        dateArray[4] = dateString.substring(17, 19); // hour of day e.g. 19
-//        dateArray[5] = dateString.substring(20, 22); // minute of hour e.g. 40
-//        dateArray[6] = dateString.substring(23, 25); // second of minute e.g. 01
-//        return dateArray;
-//    }
-//
-//    private Month strToMonth(String monthString) {
-//        switch (monthString) {
-//            case "Jan":
-//                return new Month();
-//            case "Feb"
-//            case "Mar"
-//            case "Apr"
-//            case "May"
-//            case "Jun"
-//            case "Jul"
-//            case "Aug"
-//            case "Sep"
-//            case "Oct"
-//            case "Nov"
-//            case "Dec"
-//        }
-//    }
 
 }

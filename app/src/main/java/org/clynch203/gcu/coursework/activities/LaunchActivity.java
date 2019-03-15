@@ -56,6 +56,7 @@ public class LaunchActivity extends AppCompatActivity {
             BufferedReader in;
 
             try {
+                System.out.println("1");
                 connection = url.openConnection();
                 in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
@@ -92,11 +93,16 @@ public class LaunchActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
-
-            intent.putExtra("data", this.result.toString());
-
-            startActivity(intent);
+            if (!this.result.toString().equals("")) {
+                Intent intent = new Intent(LaunchActivity.this, HomeActivity.class);
+                intent.putExtra("data", this.result.toString());
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                startActivity(intent);
+            }
         }
     }
 
