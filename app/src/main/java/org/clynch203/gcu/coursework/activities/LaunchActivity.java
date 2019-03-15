@@ -1,5 +1,6 @@
 package org.clynch203.gcu.coursework.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -63,6 +64,10 @@ public class LaunchActivity extends AppCompatActivity {
                 in.readLine();
                 int totalLines = 690; // roughly how many lines are in the XML file. Would use connection.ContentLength() but returns -1
                 while ((line = in.readLine()) != null) {
+                    if (line.equalsIgnoreCase("</rss>"))
+                        break;
+                    line = line.replace("geo:lat", "lat");
+                    line = line.replace("geo:lon", "lon");
                     result.append(line);
                     progressStatus++;
                     double d = ((double) progressStatus / (double) totalLines) * 100;
@@ -80,7 +85,6 @@ public class LaunchActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-
             downloadProgress.setProgress(values[0]);
         }
 
@@ -88,7 +92,11 @@ public class LaunchActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            //todo: move to main activity
+            Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
+
+            intent.putExtra("data", this.result.toString());
+
+            startActivity(intent);
         }
     }
 
