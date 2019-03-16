@@ -4,9 +4,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import org.clynch203.gcu.coursework.R;
@@ -31,14 +36,49 @@ public class HomeActivity extends AppCompatActivity {
         String dataToParse = getIntent().getStringExtra("data");
         Channel channel = XMLParser.parseData(dataToParse);
 
-        inflater = getLayoutInflater();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show menu
+            }
+        });
 
+
+        inflater = getLayoutInflater();
         itemContainer = findViewById(R.id.itemContainer);
 
         ConstraintLayout layout;
         for (Item item : channel.getItems()) {
             layout = createItemSimple(item, item.getId());
             itemContainer.addView(layout);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setIconifiedByDefault(false);
+        searchView.requestFocus();
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                // search
+                return true;
+            case R.id.action_sort:
+                // sort
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -83,17 +123,17 @@ public class HomeActivity extends AppCompatActivity {
         ImageView scale = (ImageView) layout.getViewById(R.id.scale);
         double mag = item.getMagnitude();
         if (mag >= 8) {
-            scale.setImageResource(R.drawable.mag_great);
+            scale.setImageResource(R.drawable.scale_great);
         } else if (mag >=7 && mag <= 7.9 ) {
-            scale.setImageResource(R.drawable.mag_major);
+            scale.setImageResource(R.drawable.scale_major);
         } else if (mag >=6.1 && mag <= 6.9 ) {
-            scale.setImageResource(R.drawable.mag_strong);
+            scale.setImageResource(R.drawable.scale_strong);
         } else if (mag >=5.5 && mag <= 6 ) {
-            scale.setImageResource(R.drawable.mag_moderate);
+            scale.setImageResource(R.drawable.scale_moderate);
         } else if (mag > 2.5 && mag <= 5.4 ) {
-            scale.setImageResource(R.drawable.mag_light);
+            scale.setImageResource(R.drawable.scale_light);
         } else if (mag <= 2.5){
-            scale.setImageResource(R.drawable.mag_minor);
+            scale.setImageResource(R.drawable.scale_minor);
         }
 
         // set magnitude

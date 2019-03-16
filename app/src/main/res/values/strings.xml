@@ -8,4 +8,6 @@
     <string name="magnitude">Magnitude: %s</string>
     <string name="category">Category: %s</string>
     <string name="depth">Depth: %d km</string>
+    <string name="action_search">Search</string>
+    <string name="action_sort">Sort</string>
 </resources>
