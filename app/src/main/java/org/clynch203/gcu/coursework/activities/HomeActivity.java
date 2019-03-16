@@ -20,12 +20,13 @@ import org.clynch203.gcu.coursework.models.Item;
 import org.clynch203.gcu.coursework.util.XMLParser;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
     private LinearLayout itemContainer;
-    private LayoutInflater inflater;
     private int currentItemCount = 0;
+    private Channel channel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +35,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // get data that was fetched on launched screen
         String dataToParse = getIntent().getStringExtra("data");
-        Channel channel = XMLParser.parseData(dataToParse);
+        channel = XMLParser.parseData(dataToParse);
 
+        // init toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -45,25 +47,35 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
-        inflater = getLayoutInflater();
+        // init container
         itemContainer = findViewById(R.id.itemContainer);
 
-        ConstraintLayout layout;
-        for (Item item : channel.getItems()) {
-            layout = createItemSimple(item, item.getId());
-            itemContainer.addView(layout);
-        }
+        // display items
+        displayItems(channel.getItems());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setIconifiedByDefault(false);
         searchView.requestFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                currentItemCount = 0;
+                itemContainer.removeAllViews();
+                displayItems(search(newText));
+                return false;
+            }
+        });
 
         return true;
     }
@@ -83,6 +95,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private ConstraintLayout createItemSimple(Item item, int id) {
+        LayoutInflater inflater = getLayoutInflater();
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.template_item_simple, itemContainer, false);
         DecimalFormat format = new DecimalFormat("###.##");
 
@@ -145,5 +158,21 @@ public class HomeActivity extends AppCompatActivity {
         category.setText(String.format(getResources().getString(R.string.category), item.getCategory()));
 
         return layout;
+    }
+
+    private void displayItems(ArrayList<Item> items) {
+        ConstraintLayout layout;
+        for (Item item : items) {
+            layout = createItemSimple(item, item.getId());
+            itemContainer.addView(layout);
+        }
+    }
+
+    private ArrayList<Item> search(String text) {
+        ArrayList<Item> items = new ArrayList<>();
+        for (Item item : channel.getItems())
+            if (item.getLocation().split(",")[0].toLowerCase().contains(text.toLowerCase()))
+                items.add(item);
+        return items;
     }
 }
