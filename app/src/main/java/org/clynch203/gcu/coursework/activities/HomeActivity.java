@@ -27,6 +27,7 @@ public class HomeActivity extends AppCompatActivity {
     private LinearLayout itemContainer;
     private int currentItemCount = 0;
     private Channel channel;
+    ArrayList<ConstraintLayout> itemViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,15 @@ public class HomeActivity extends AppCompatActivity {
         // init container
         itemContainer = findViewById(R.id.itemContainer);
 
-        // display items
-        displayItems(channel.getItems());
+        // init and display views
+        itemViews = new ArrayList<>(channel.getItems().size());
+
+        for (Item item : channel.getItems())
+            itemViews.add(createItemView(item));
+
+        for (ConstraintLayout layout : itemViews)
+            itemContainer.addView(layout);
+
     }
 
     @Override
@@ -70,9 +78,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                currentItemCount = 0;
-                itemContainer.removeAllViews();
-                displayItems(search(newText));
+                searchItems(newText);
                 return false;
             }
         });
@@ -94,12 +100,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private ConstraintLayout createItemSimple(Item item, int id) {
+    private ConstraintLayout createItemView(Item item) {
         LayoutInflater inflater = getLayoutInflater();
         ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.template_item_simple, itemContainer, false);
         DecimalFormat format = new DecimalFormat("###.##");
 
-        layout.setTag("item"+id);
+        layout.setTag("item"+item.getId());
 
         switch (currentItemCount) {
             case 0:
@@ -160,19 +166,14 @@ public class HomeActivity extends AppCompatActivity {
         return layout;
     }
 
-    private void displayItems(ArrayList<Item> items) {
-        ConstraintLayout layout;
-        for (Item item : items) {
-            layout = createItemSimple(item, item.getId());
-            itemContainer.addView(layout);
+    private void searchItems(String text) {
+        for (ConstraintLayout itemView : itemViews) {
+            TextView textView = (TextView) itemView.getViewById(R.id.location);
+            if (! textView.getText().toString().toLowerCase().contains(text.toLowerCase())) {
+                itemView.setVisibility(View.GONE);
+            } else {
+                itemView.setVisibility(View.VISIBLE);
+            }
         }
-    }
-
-    private ArrayList<Item> search(String text) {
-        ArrayList<Item> items = new ArrayList<>();
-        for (Item item : channel.getItems())
-            if (item.getLocation().split(",")[0].toLowerCase().contains(text.toLowerCase()))
-                items.add(item);
-        return items;
     }
 }
