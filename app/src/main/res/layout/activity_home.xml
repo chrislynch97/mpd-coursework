@@ -16,7 +16,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/Base.ThemeOverlay.AppCompat.Light"
         app:title="HOME"
-        app:navigationIcon="@drawable/ic_menu_white_24dp">
+        app:navigationIcon="@drawable/ic_toolbar_menu">
 
     </android.support.v7.widget.Toolbar>
     

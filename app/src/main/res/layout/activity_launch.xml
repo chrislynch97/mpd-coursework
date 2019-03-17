@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/launch_background">
+    android:background="@drawable/background_launch">
 
     <TextView
         android:id="@+id/moduleHeading"
