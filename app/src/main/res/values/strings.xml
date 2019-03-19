@@ -1,13 +1,20 @@
 <resources>
+    <!-- APP INFO -->
     <string name="app_name">Coursework</string>
     <string name="module_name">Mobile Platform Development</string>
-    <string name="down_xml">Downloading XML…</string>
-    <string name="by_student">By Christopher Lynch\nS1511825\nComputing</string>
+    <string name="loading">Loading…</string>
+    <string name="student">By Christopher Lynch\nS1511825\nComputing</string>
+
+
+    <!-- ITEM INFO -->
     <string name="location">Location: %s</string>
     <string name="originDate">Origin Date: %tD</string>
     <string name="magnitude">Magnitude: %s</string>
     <string name="category">Category: %s</string>
     <string name="depth">Depth: %d km</string>
+
+    <!-- ACTIONS -->
     <string name="action_search">Search</string>
     <string name="action_sort">Sort</string>
+    <string name="action_date">Date</string>
 </resources>

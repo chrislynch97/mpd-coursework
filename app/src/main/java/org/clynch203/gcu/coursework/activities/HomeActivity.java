@@ -26,7 +26,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private LinearLayout itemContainer;
     private int currentItemCount = 0;
-    private Channel channel;
     ArrayList<ConstraintLayout> itemViews;
 
     @Override
@@ -36,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // get data that was fetched on launched screen
         String dataToParse = getIntent().getStringExtra("data");
-        channel = XMLParser.parseData(dataToParse);
+        Channel channel = XMLParser.parseData(dataToParse);
 
         // init toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -63,13 +62,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
+
         searchView.setIconifiedByDefault(false);
         searchView.requestFocus();
+
+        // detect search
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

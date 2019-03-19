@@ -14,4 +14,10 @@
         android:title="@string/action_sort"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_date"
+        android:icon="@drawable/ic_toolbar_date"
+        android:title="@string/action_date"
+        app:showAsAction="ifRoom"/>
+
 </menu>

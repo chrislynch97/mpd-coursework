@@ -25,24 +25,23 @@ public class LaunchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_launch);
 
         downloadProgress = findViewById(R.id.downloadProgress);
-        startDownload();
-    }
 
-    private void startDownload() {
         new DownloadTask().execute();
     }
 
     private class DownloadTask extends AsyncTask<Void, Integer, Void> {
 
         int progressStatus;
+        StringBuilder result;
         URL url;
-        StringBuilder result = new StringBuilder();
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
             progressStatus = 0;
+            result = new StringBuilder();
+
             try {
                 url = new URL("http://quakes.bgs.ac.uk/feeds/MhSeismology.xml");
             } catch (MalformedURLException e) {
@@ -56,20 +55,25 @@ public class LaunchActivity extends AppCompatActivity {
             BufferedReader in;
 
             try {
-                System.out.println("1");
                 connection = url.openConnection();
                 in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
                 String line;
+
+                // skip first 2 lines
                 in.readLine();
                 in.readLine();
+
                 int totalLines = 690; // roughly how many lines are in the XML file. Would use connection.ContentLength() but returns -1
+
                 while ((line = in.readLine()) != null) {
-                    if (line.equalsIgnoreCase("</rss>"))
-                        break;
+                    if (line.equalsIgnoreCase("</rss>")) break;
+
                     line = line.replace("geo:lat", "lat");
                     line = line.replace("geo:lon", "lon");
+
                     result.append(line);
+
                     progressStatus++;
                     double d = ((double) progressStatus / (double) totalLines) * 100;
                     publishProgress((int)d);
@@ -86,6 +90,7 @@ public class LaunchActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
+
             downloadProgress.setProgress(values[0]);
         }
 
@@ -96,11 +101,6 @@ public class LaunchActivity extends AppCompatActivity {
             if (!this.result.toString().equals("")) {
                 Intent intent = new Intent(LaunchActivity.this, HomeActivity.class);
                 intent.putExtra("data", this.result.toString());
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 startActivity(intent);
             }
         }
