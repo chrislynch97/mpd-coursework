@@ -10,18 +10,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import org.clynch203.gcu.coursework.R;
 import org.clynch203.gcu.coursework.controllers.ChannelController;
 import org.clynch203.gcu.coursework.fragments.DateRangeFragment;
 import org.clynch203.gcu.coursework.models.Item;
+import org.clynch203.gcu.coursework.util.ObjectToView;
 import org.clynch203.gcu.coursework.util.XMLParser;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -48,7 +46,7 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
             }
         });
 
-        itemContainer = findViewById(R.id.itemContainer);
+        itemContainer = findViewById(R.id.homeItemContainer);
 
         displayItems(channelController.items());
     }
@@ -90,10 +88,8 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
 
     private ConstraintLayout createItemView(final Item item) {
         LayoutInflater inflater = getLayoutInflater();
-        ConstraintLayout layout = (ConstraintLayout) inflater
-                .inflate(R.layout.template_item_simple, itemContainer, false);
 
-        DecimalFormat format = new DecimalFormat("###.##");
+        ConstraintLayout layout = ObjectToView.createSimpleItemView(inflater, itemContainer, this, item);
 
         // set background color
         int backgroundColor = ResourcesCompat.getColor(getResources(), R.color.item_1_background, null);
@@ -117,58 +113,8 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
 
         layout.setBackgroundColor(backgroundColor);
 
-        // set location
-        TextView location = (TextView) layout.getViewById(R.id.item_template_location);
-        if (item.getLocation().contains(","))
-            location.setText(item.getLocation().split(",")[0]);
-        else
-            location.setText(item.getLocation().split("\\.")[0]);
-
-        // set date
-        TextView originDate = (TextView) layout.getViewById(R.id.item_template_origin_date);
-        originDate.setText(item.getOriginDateString());
-
-        // set depth
-        TextView depth = (TextView) layout.getViewById(R.id.item_template_depth);
-        depth.setText(String.format(getResources().getString(R.string.item_depth), item.getDepth()));
-
-        // set scale
-        ImageView scale = (ImageView) layout.getViewById(R.id.item_template_scale);
-        double mag = item.getMagnitude();
-        if (mag >= 8) {
-            scale.setImageResource(R.drawable.scale_great);
-        } else if (mag >=7 && mag <= 7.9 ) {
-            scale.setImageResource(R.drawable.scale_major);
-        } else if (mag >=6.1 && mag <= 6.9 ) {
-            scale.setImageResource(R.drawable.scale_strong);
-        } else if (mag >=5.5 && mag <= 6 ) {
-            scale.setImageResource(R.drawable.scale_moderate);
-        } else if (mag > 2.5 && mag <= 5.4 ) {
-            scale.setImageResource(R.drawable.scale_light);
-        } else if (mag <= 2.5){
-            scale.setImageResource(R.drawable.scale_minor);
-        }
-
-        // set magnitude
-        TextView magnitude = (TextView) layout.getViewById(R.id.item_template_magnitude);
-        magnitude.setText(format.format(item.getMagnitude()));
-
-        // set category
-        TextView category = (TextView) layout.getViewById(R.id.item_template_category);
-        category.setText(String.format(getResources().getString(R.string.item_category), item.getCategory()));
-
-        final int finalBackgroundColor = backgroundColor;
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ItemActivity.class);
-                intent.putExtra("backgroundColor", finalBackgroundColor);
-                intent.putExtra("item", item);
-                startActivity(intent);
-            }
-        });
-
         return layout;
+
     }
 
     private void displayItems(final ArrayList<Item> items) {
@@ -192,9 +138,6 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
         }
 
         Intent intent = new Intent(HomeActivity.this, ResultActivity.class);
-
-        intent.putExtra("startDate", startDate);
-        intent.putExtra("endDate", endDate);
 
         Item mostNorthernItem = channelController.mostNorthernItem(items);
         intent.putExtra("mostNorthernItem", mostNorthernItem);

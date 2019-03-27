@@ -72,7 +72,7 @@ public class LaunchActivity extends AppCompatActivity {
                     if (line.equalsIgnoreCase("</rss>")) break;
 
                     line = line.replace("geo:lat", "lat");
-                    line = line.replace("geo:lon", "lon");
+                    line = line.replace("geo:long", "lon");
 
                     result.append(line);
 

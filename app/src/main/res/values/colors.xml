@@ -21,9 +21,9 @@
     <color name="table_text">#FFFFFF</color>
 
     <!-- RESULT ACTIVITY -->
-    <color name="result_background">#524364</color>
-    <color name="result_title_background">#40C8C2</color>
-    <color name="result_title_text">#524364</color>
+    <color name="result_background">#ffffff</color>
+    <color name="result_title_background">#524364</color>
+    <color name="result_title_text">#ffffff</color>
 
     <!-- DATE RANGE FRAGMENT DIALOG -->
     <color name="dialog_title_background">#40C8C2</color>

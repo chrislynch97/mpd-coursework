@@ -177,4 +177,22 @@ public class Item implements Parcelable {
         }
 
     };
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", pubDate=" + pubDate +
+                ", category='" + category + '\'' +
+                ", lat=" + lat +
+                ", lon=" + lon +
+                ", location='" + location + '\'' +
+                ", magnitude=" + magnitude +
+                ", depth=" + depth +
+                ", originDate=" + originDate +
+                ", id=" + id +
+                '}';
+    }
 }

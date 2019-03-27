@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,39 +10,18 @@
         android:id="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:elevation="2dp"
         style="@style/BackButtonFrame">
         <ImageView style="@style/BackButtonImage"/>
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/resultDates"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp">
-        <TextView
-            android:id="@+id/resultStartDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            />
-        <TextView
-            android:id="@+id/resultEndDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"/>
-
-    </LinearLayout>
-
     <ScrollView
-        app:layout_constraintTop_toBottomOf="@id/resultDates"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/resultItemActivity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
