@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- APP -->
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!-- LAUNCH ACTIVITY -->
+    <color name="launch_text">#ffffff</color>
+
+    <!-- HOME ACTIVITY -->
+    <color name="home_item_text">#ffffff</color>
+    <color name="item_1_background">#4C98CF</color>
+    <color name="item_2_background">#4874A8</color>
+    <color name="item_3_background">#595386</color>
+    <color name="item_4_background">#524364</color>
+
+    <!-- ITEM ACTIVITY -->
+    <color name="table_background">#B2000000</color>
+    <color name="table_row">#3F5A5858</color>
+    <color name="table_text">#FFFFFF</color>
+
+    <!-- RESULT ACTIVITY -->
+    <color name="result_background">#524364</color>
+    <color name="result_title_background">#40C8C2</color>
+    <color name="result_title_text">#524364</color>
+
+    <!-- DATE RANGE FRAGMENT DIALOG -->
+    <color name="dialog_title_background">#40C8C2</color>
+    <color name="dialog_title_text">#524364</color>
+    <color name="dialog_body_background">#524364</color>
+    <color name="dialog_body_text">#40C8C2</color>
+    <color name="dialog_positive_button_text">#40C8C2</color>
+    <color name="dialog_negative_button_text">#40C8C2</color>
 </resources>

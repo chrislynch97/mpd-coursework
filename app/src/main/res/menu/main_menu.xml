@@ -9,12 +9,6 @@
         app:actionViewClass="android.widget.SearchView"/>
 
     <item
-        android:id="@+id/action_sort"
-        android:icon="@drawable/ic_toolbar_sort"
-        android:title="@string/action_sort"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/action_date"
         android:icon="@drawable/ic_toolbar_date"
         android:title="@string/action_date"

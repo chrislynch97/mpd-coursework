@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/result_background">
+
+    <FrameLayout
+        android:id="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        style="@style/BackButtonFrame">
+        <ImageView style="@style/BackButtonImage"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/resultDates"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp">
+        <TextView
+            android:id="@+id/resultStartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            />
+        <TextView
+            android:id="@+id/resultEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        app:layout_constraintTop_toBottomOf="@id/resultDates"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/mostNorthernTitle"
+                style="@style/ResultTitleLayout">
+                <TextView style="@style/ResultTitleText" android:text="@string/most_northern" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mostEasternTitle"
+                style="@style/ResultTitleLayout">
+                <TextView style="@style/ResultTitleText" android:text="@string/most_eastern" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mostSouthernTitle"
+                style="@style/ResultTitleLayout">
+                <TextView style="@style/ResultTitleText" android:text="@string/most_southern" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mostWesternTitle"
+                style="@style/ResultTitleLayout">
+                <TextView style="@style/ResultTitleText" android:text="@string/most_western" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/largestMagnitudeTitle"
+                style="@style/ResultTitleLayout">
+                <TextView style="@style/ResultTitleText" android:text="@string/largest_magnitude" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/deepestEarthquakeTitle"
+                style="@style/ResultTitleLayout">
+                <TextView style="@style/ResultTitleText" android:text="@string/deepest_earthquake" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/shallowestEarthquakeTitle"
+                style="@style/ResultTitleLayout"
+                app:layout_constraintStart_toStartOf="parent">
+                <TextView style="@style/ResultTitleText" android:text="@string/shallowest_earthquake" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

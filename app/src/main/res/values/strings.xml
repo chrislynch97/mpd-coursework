@@ -1,20 +1,49 @@
 <resources>
-    <!-- APP INFO -->
+    <!-- LAUNCH ACTIVITY -->
     <string name="app_name">Coursework</string>
     <string name="module_name">Mobile Platform Development</string>
     <string name="loading">Loading…</string>
     <string name="student">By Christopher Lynch\nS1511825\nComputing</string>
 
+    <!-- HOME ACTIVITY -->
+    <string name="item_category">Category: %s</string>
+    <string name="item_depth">Depth: %d km</string>
 
-    <!-- ITEM INFO -->
-    <string name="location">Location: %s</string>
-    <string name="originDate">Origin Date: %tD</string>
-    <string name="magnitude">Magnitude: %s</string>
-    <string name="category">Category: %s</string>
-    <string name="depth">Depth: %d km</string>
+    <!-- ITEM ACTIVITY -->
+    <string name="location">Location</string>
+    <string name="magnitude">Magnitude</string>
+    <string name="depth">Depth</string>
+    <string name="category">Category</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="origin_date">Origin Date</string>
+    <string name="publish_date">Publish Date</string>
+    <string name="depth_km">%d km</string>
+
+    <!-- RESULT ACTIVITY -->
+    <string name="start_date">Start date: %s</string>
+    <string name="end_date">End date: %s</string>
+    <string name="most_northern">Most Northern</string>
+    <string name="most_eastern">Most Eastern</string>
+    <string name="most_southern">Most Southern</string>
+    <string name="most_western">Most Western</string>
 
     <!-- ACTIONS -->
     <string name="action_search">Search</string>
     <string name="action_sort">Sort</string>
+    <string name="action_sort_default">Default</string>
+    <string name="action_sort_date_ascending">Date Ascending</string>
+    <string name="action_sort_date_descending">Date Descending</string>
     <string name="action_date">Date</string>
+
+    <!-- Date RANGE FRAGMENT -->
+    <string name="select_date">Select Date</string>
+    <string name="okay">Okay</string>
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_start_date">Start Date:</string>
+    <string name="select_end_date">End Date:</string>
+    <string name="largest_magnitude">Largest Magnitude</string>
+    <string name="deepest_earthquake">Deepest Earthquake</string>
+    <string name="shallowest_earthquake">Shallowest Earthquake</string>
 </resources>

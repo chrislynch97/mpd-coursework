@@ -11,29 +11,31 @@ import org.clynch203.gcu.coursework.R;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class LaunchActivity extends AppCompatActivity {
 
-    private ProgressBar downloadProgress;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
-        downloadProgress = findViewById(R.id.downloadProgress);
-
-        new DownloadTask().execute();
+        new DownloadTask(this).execute();
     }
 
-    private class DownloadTask extends AsyncTask<Void, Integer, Void> {
+    private static class DownloadTask extends AsyncTask<Void, Integer, Void> {
 
         int progressStatus;
         StringBuilder result;
         URL url;
+        private WeakReference<LaunchActivity> activityReference;
+
+        DownloadTask(LaunchActivity context) {
+            activityReference = new WeakReference<>(context);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -91,6 +93,8 @@ public class LaunchActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
 
+            ProgressBar downloadProgress = activityReference.get().findViewById(R.id.downloadProgress);
+
             downloadProgress.setProgress(values[0]);
         }
 
@@ -99,9 +103,10 @@ public class LaunchActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             if (!this.result.toString().equals("")) {
-                Intent intent = new Intent(LaunchActivity.this, HomeActivity.class);
+                Intent intent = new Intent(activityReference.get(), HomeActivity.class);
                 intent.putExtra("data", this.result.toString());
-                startActivity(intent);
+                activityReference.get().startActivity(intent);
+                activityReference.get().finish();
             }
         }
     }

@@ -1,10 +1,15 @@
 package org.clynch203.gcu.coursework.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Item {
+public class Item implements Parcelable {
+
+    private static final String pattern = "EEE, dd MMM yyyy HH:mm:ss";
 
     private String title;
     private String description;
@@ -53,6 +58,11 @@ public class Item {
 
     public void setPubDate(Date pubDate) {
         this.pubDate = pubDate;
+    }
+
+    public String getPubDateString() {
+        DateFormat format = new SimpleDateFormat(pattern);
+        return format.format(pubDate);
     }
 
     public String getCategory() {
@@ -111,13 +121,60 @@ public class Item {
         this.originDate = originDate;
     }
 
+    public String getOriginDateString() {
+        DateFormat format = new SimpleDateFormat(pattern);
+        return format.format(originDate);
+    }
+
     public int getId() {
         return id;
     }
 
-    public String getOriginDateString() {
-        String pattern = "EEE, dd MMM yyyy HH:mm:ss";
-        DateFormat format = new SimpleDateFormat(pattern);
-        return format.format(originDate);
+    @Override
+    public int describeContents() {
+        return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(link);
+        dest.writeLong(pubDate.getTime());
+        dest.writeString(category);
+        dest.writeDouble(lat);
+        dest.writeDouble(lon);
+        dest.writeString(location);
+        dest.writeDouble(magnitude);
+        dest.writeInt(depth);
+        dest.writeLong(originDate.getTime());
+        dest.writeInt(id);
+    }
+
+    private Item(Parcel in) {
+        this.title = in.readString();
+        this.description = in.readString();
+        this.link = in.readString();
+        this.pubDate = new Date(in.readLong());
+        this.category = in.readString();
+        this.lat = in.readDouble();
+        this.lon = in.readDouble();
+        this.location = in.readString();
+        this.magnitude = in.readDouble();
+        this.depth = in.readInt();
+        this.originDate = new Date(in.readLong());
+        this.id = in.readInt();
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+
+    };
 }
