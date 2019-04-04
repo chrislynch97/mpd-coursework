@@ -8,6 +8,11 @@
     <!-- LAUNCH ACTIVITY -->
     <color name="launch_text">#ffffff</color>
 
+    <!-- NAV DRAWER -->
+    <color name="nav_drawer_header_background">#524364</color>
+    <color name="nav_item_icon_tint">#fff</color>
+    <color name="nav_item_text_color">#fff</color>
+
     <!-- HOME ACTIVITY -->
     <color name="home_item_text">#ffffff</color>
     <color name="item_1_background">#4C98CF</color>

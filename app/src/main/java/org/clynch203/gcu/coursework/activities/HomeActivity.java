@@ -2,8 +2,13 @@ package org.clynch203.gcu.coursework.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,7 +25,6 @@ import org.clynch203.gcu.coursework.models.Item;
 import org.clynch203.gcu.coursework.util.ObjectToView;
 import org.clynch203.gcu.coursework.util.XMLParser;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements DateRangeFragment.InterfaceCommunicator {
@@ -28,6 +32,7 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
     private LinearLayout itemContainer;
     private int currentItemCount = 0;
     private ChannelController channelController;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +44,28 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_toolbar_menu);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                // set item as selected to persist highlight
+                menuItem.setChecked(true);
+                // close drawer when item is tapped
+                drawerLayout.closeDrawers();
+
+                // add code here to update the ui based on the item selected
+                // for example, swap ui fragments
+
+                return true;
             }
         });
 
@@ -77,13 +100,15 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
             case R.id.action_date:
                 DateRangeFragment fragment = new DateRangeFragment();
                 fragment.show(getSupportFragmentManager(), "dateRangeFragment");
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private ConstraintLayout createItemView(final Item item) {

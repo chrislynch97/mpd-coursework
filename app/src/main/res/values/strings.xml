@@ -5,6 +5,12 @@
     <string name="loading">Loading…</string>
     <string name="student">By Christopher Lynch\nS1511825\nComputing</string>
 
+    <!-- NAV DRAWER -->
+    <string name="home">Home</string>
+    <string name="map">Map</string>
+    <string name="about">About</string>
+    <string name="settings">Settings</string>
+
     <!-- HOME ACTIVITY -->
     <string name="item_category">Category: %s</string>
     <string name="item_depth">Depth: %d km</string>
