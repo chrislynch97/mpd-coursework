@@ -7,7 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 public class ChannelController {
 
@@ -50,14 +52,21 @@ public class ChannelController {
         return matchingItems;
     }
 
-    public ArrayList<Item> itemsBetweenDate(final String startDateString, final String endDateString) throws ParseException {
+    public ArrayList<Item> itemsBetweenDate(final String startDateString, final String endDateString) {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        Date startDate = format.parse(startDateString);
-        Date endDate = format.parse(endDateString);
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = format.parse(startDateString);
+            endDate = format.parse(endDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return itemsBetweenDate(startDate, endDate);
     }
 
     public Item mostNorthernItem(final ArrayList<Item> items) {
+        if (items.size() == 0) return null;
         Item mostNorthernItem = items.get(0);
         for (Item item : items)
             if (item.getLat() > mostNorthernItem.getLat())
@@ -66,6 +75,7 @@ public class ChannelController {
     }
 
     public Item mostEasternItem(final ArrayList<Item> items) {
+        if (items.size() == 0) return null;
         Item mostEasternItem = items.get(0);
         for (Item item : items)
             if (item.getLon() > mostEasternItem.getLon())
@@ -74,6 +84,7 @@ public class ChannelController {
     }
 
     public Item mostSouthernItem(final ArrayList<Item> items) {
+        if (items.size() == 0) return null;
         Item mostSouthernItem = items.get(0);
         for (Item item : items)
             if (item.getLat() < mostSouthernItem.getLat())
@@ -82,6 +93,7 @@ public class ChannelController {
     }
 
     public Item mostWesternItem(final ArrayList<Item> items) {
+        if (items.size() == 0) return null;
         Item mostWesternItem = items.get(0);
         for (Item item : items)
             if (item.getLon() < mostWesternItem.getLon())
@@ -90,6 +102,7 @@ public class ChannelController {
     }
 
     public Item largestMagnitudeItem(final ArrayList<Item> items) {
+        if (items.size() == 0) return null;
         Item largestMagnitudeItem = items.get(0);
         for (Item item : items)
             if (item.getMagnitude() > largestMagnitudeItem.getMagnitude())
@@ -98,6 +111,7 @@ public class ChannelController {
     }
 
     public Item deepestItem(final ArrayList<Item> items) {
+        if (items.size() == 0) return null;
         Item deepestItem = items.get(0);
         for (Item item : items)
             if (item.getDepth() > deepestItem.getDepth())
@@ -106,6 +120,7 @@ public class ChannelController {
     }
 
     public Item shallowestItem(final ArrayList<Item> items) {
+        if (items.size() == 0) return null;
         Item shallowestItem = items.get(0);
         for (Item item : items)
             if (item.getDepth() < shallowestItem.getDepth())

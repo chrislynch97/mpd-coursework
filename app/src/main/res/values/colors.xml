@@ -21,7 +21,7 @@
     <color name="table_text">#FFFFFF</color>
 
     <!-- RESULT ACTIVITY -->
-    <color name="result_background">#ffffff</color>
+    <color name="result_background">#524364</color>
     <color name="result_title_background">#524364</color>
     <color name="result_title_text">#ffffff</color>
 

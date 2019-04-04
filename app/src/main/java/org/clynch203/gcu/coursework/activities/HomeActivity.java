@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO - SHOW MENU
+
             }
         });
 
@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
@@ -130,37 +130,36 @@ public class HomeActivity extends AppCompatActivity implements DateRangeFragment
     public void sendRequest(int code, Intent requestIntent) {
         String startDate = requestIntent.getStringExtra("startDate");
         String endDate = requestIntent.getStringExtra("endDate");
-        ArrayList<Item> items = new ArrayList<>();
-        try {
-            items = channelController.itemsBetweenDate(startDate, endDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        ArrayList<Item> items = channelController.itemsBetweenDate(startDate, endDate);
 
         Intent intent = new Intent(HomeActivity.this, ResultActivity.class);
 
-        Item mostNorthernItem = channelController.mostNorthernItem(items);
-        intent.putExtra("mostNorthernItem", mostNorthernItem);
+        intent.putExtra("itemsEmpty", items.size() == 0);
 
-        Item mostEasternItem = channelController.mostEasternItem(items);
-        intent.putExtra("mostEasternItem", mostEasternItem);
+        if (items.size() > 0) {
 
-        Item mostSouthernItem = channelController.mostSouthernItem(items);
-        intent.putExtra("mostSouthernItem", mostSouthernItem);
+            Item mostNorthernItem = channelController.mostNorthernItem(items);
+            intent.putExtra("mostNorthernItem", mostNorthernItem);
 
-        Item mostWesternItem = channelController.mostWesternItem(items);
-        intent.putExtra("mostWesternItem", mostWesternItem);
+            Item mostEasternItem = channelController.mostEasternItem(items);
+            intent.putExtra("mostEasternItem", mostEasternItem);
 
-        Item largestMagnitudeItem = channelController.largestMagnitudeItem(items);
-        intent.putExtra("largestMagnitudeItem", largestMagnitudeItem);
+            Item mostSouthernItem = channelController.mostSouthernItem(items);
+            intent.putExtra("mostSouthernItem", mostSouthernItem);
 
-        Item deepestItem = channelController.deepestItem(items);
-        intent.putExtra("deepestItem", deepestItem);
+            Item mostWesternItem = channelController.mostWesternItem(items);
+            intent.putExtra("mostWesternItem", mostWesternItem);
 
-        Item shallowestItem = channelController.shallowestItem(items);
-        intent.putExtra("shallowestItem", shallowestItem);
+            Item largestMagnitudeItem = channelController.largestMagnitudeItem(items);
+            intent.putExtra("largestMagnitudeItem", largestMagnitudeItem);
 
+            Item deepestItem = channelController.deepestItem(items);
+            intent.putExtra("deepestItem", deepestItem);
+
+            Item shallowestItem = channelController.shallowestItem(items);
+            intent.putExtra("shallowestItem", shallowestItem);
+
+        }
         startActivity(intent);
-
     }
 }
