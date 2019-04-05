@@ -92,7 +92,10 @@ public abstract class XMLParser {
                                     item.setLocation(location[1].substring(1));
 
                                     String[] depth = descriptionItems[3].split(":");
-                                    item.setDepth(Integer.parseInt(depth[1].replace("km","").replace(" ", "")));
+                                    String d = depth[1].replace("km", "").replace(" ", "");
+                                    int depthInt = 0;
+                                    if (!d.equals("")) depthInt = Integer.parseInt(d);
+                                    item.setDepth(depthInt);
 
                                     String[] magnitude = descriptionItems[4].split(":");
                                     item.setMagnitude(Double.parseDouble(magnitude[1]));
