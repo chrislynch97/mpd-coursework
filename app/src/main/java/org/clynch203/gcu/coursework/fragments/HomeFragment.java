@@ -6,12 +6,9 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 
 import org.clynch203.gcu.coursework.R;
 import org.clynch203.gcu.coursework.activities.ResultActivity;
@@ -38,23 +35,6 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         displayItems(channelController.items());
-    }
-
-    public void initialiseToolbar(Menu menu) {
-        requireActivity().getMenuInflater().inflate(R.menu.toolbar_menu_home, menu);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setIconifiedByDefault(false);
-        searchView.requestFocus();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override public boolean onQueryTextSubmit(String query) { return false; }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                displayItems(channelController.searchItemsByLocation(query));
-                return false;
-            }
-        });
     }
 
     private ConstraintLayout createItemView(final Item item) {

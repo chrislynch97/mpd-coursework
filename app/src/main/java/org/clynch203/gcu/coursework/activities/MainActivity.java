@@ -1,6 +1,7 @@
 package org.clynch203.gcu.coursework.activities;
 
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
 
 import org.clynch203.gcu.coursework.R;
 import org.clynch203.gcu.coursework.controllers.ChannelController;
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
     private ChannelController channelController;
     private DrawerLayout drawerLayout;
     private Fragment currentFragment;
+    private Toolbar toolbar;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
     }
 
     private void initialiseToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -82,15 +87,19 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
                     case "Home":
                         currentFragment = new HomeFragment();
                         ((HomeFragment) currentFragment).setChannelController(channelController);
+                        updateToolbar("Home");
                         break;
                     case "Map":
                         currentFragment = new MapFragment();
+                        updateToolbar("Map");
                         break;
                     case "About":
                         currentFragment = new AboutFragment();
+                        updateToolbar("About");
                         break;
                     case "Settings":
                         currentFragment = new SettingsFragment();
+                        updateToolbar("Settings");
                         break;
                 }
 
@@ -102,11 +111,38 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
         });
     }
 
+    private void updateToolbar(String fragmentName) {
+        toolbar.setTitle(fragmentName);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItem dateItem = menu.findItem(R.id.action_date);
+
+        if (fragmentName.equals("Home")) {
+            searchItem.setVisible(true);
+            dateItem.setVisible(true);
+        } else {
+            searchItem.setVisible(false);
+            dateItem.setVisible(false);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        if (currentFragment instanceof HomeFragment) {
-            ((HomeFragment) currentFragment).initialiseToolbar(menu);
-        }
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setIconifiedByDefault(false);
+        searchView.requestFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override public boolean onQueryTextSubmit(String query) { return false; }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                ((HomeFragment)currentFragment).displayItems(channelController.searchItemsByLocation(query));
+                return false;
+            }
+        });
         return true;
     }
 
