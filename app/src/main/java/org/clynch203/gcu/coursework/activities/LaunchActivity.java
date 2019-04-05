@@ -49,7 +49,7 @@ public class LaunchActivity extends AppCompatActivity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(LaunchActivity.this, HomeActivity.class);
+                            Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
                             intent.putExtra("data", data);
 
                             startActivity(intent);
@@ -164,7 +164,7 @@ public class LaunchActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             if (!this.result.toString().equals("")) {
-                Intent intent = new Intent(activityReference.get(), HomeActivity.class);
+                Intent intent = new Intent(activityReference.get(), MainActivity.class);
                 intent.putExtra("data", this.result.toString());
 
                 FileHandler.deleteFile(activityReference.get(), DATA_FILENAME);
