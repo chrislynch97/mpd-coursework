@@ -9,7 +9,6 @@
     <string name="home">Home</string>
     <string name="map">Map</string>
     <string name="about">About</string>
-    <string name="settings">Settings</string>
 
     <!-- HOME ACTIVITY -->
     <string name="item_category">Category: %s</string>

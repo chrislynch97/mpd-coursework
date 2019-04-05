@@ -1,7 +1,6 @@
 package org.clynch203.gcu.coursework.activities;
 
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
 
 import org.clynch203.gcu.coursework.R;
@@ -24,7 +22,6 @@ import org.clynch203.gcu.coursework.fragments.AboutFragment;
 import org.clynch203.gcu.coursework.fragments.DateRangeFragment;
 import org.clynch203.gcu.coursework.fragments.HomeFragment;
 import org.clynch203.gcu.coursework.fragments.MapFragment;
-import org.clynch203.gcu.coursework.fragments.SettingsFragment;
 import org.clynch203.gcu.coursework.util.XMLParser;
 
 public class MainActivity extends AppCompatActivity implements DateRangeFragment.InterfaceCommunicator {
@@ -96,10 +93,6 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
                     case "About":
                         currentFragment = new AboutFragment();
                         updateToolbar("About");
-                        break;
-                    case "Settings":
-                        currentFragment = new SettingsFragment();
-                        updateToolbar("Settings");
                         break;
                 }
 
