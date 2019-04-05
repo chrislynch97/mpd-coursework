@@ -26,6 +26,9 @@
     <string name="publish_date">Publish Date</string>
     <string name="depth_km">%d km</string>
 
+    <!-- ABOUT ACTIVITY -->
+    <string name="image_description">British Geological Survey Logo</string>
+
     <!-- RESULT ACTIVITY -->
     <string name="start_date">Start date: %s</string>
     <string name="end_date">End date: %s</string>

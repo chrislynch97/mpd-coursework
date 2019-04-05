@@ -1,6 +1,7 @@
 package org.clynch203.gcu.coursework.controllers;
 
 import org.clynch203.gcu.coursework.models.Channel;
+import org.clynch203.gcu.coursework.models.Image;
 import org.clynch203.gcu.coursework.models.Item;
 
 import java.text.ParseException;
@@ -14,6 +15,10 @@ import java.util.NoSuchElementException;
 public class ChannelController {
 
     private final Channel channel;
+
+    public Image getImage() {
+        return channel.getImage();
+    }
 
     public ChannelController(Channel channel) {
         this.channel = channel;

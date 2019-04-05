@@ -30,6 +30,9 @@
     <color name="result_title_background">#524364</color>
     <color name="result_title_text">#ffffff</color>
 
+    <!-- ABOUT ACTIVITY -->
+    <color name="about_background">#524364</color>
+
     <!-- DATE RANGE FRAGMENT DIALOG -->
     <color name="dialog_title_background">#40C8C2</color>
     <color name="dialog_title_text">#524364</color>
