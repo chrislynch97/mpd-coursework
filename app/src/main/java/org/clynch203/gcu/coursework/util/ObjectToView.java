@@ -33,10 +33,11 @@ public abstract class ObjectToView {
 
         // set location
         TextView location = (TextView) layout.getViewById(R.id.item_template_location);
-        if (item.getLocation().contains(","))
-            location.setText(item.getLocation().split(",")[0]);
-        else
-            location.setText(item.getLocation().split("\\.")[0]);
+        location.setText(item.getLocation());
+//        if (item.getLocation().contains(","))
+//            location.setText(item.getLocation().split(",")[0]);
+//        else
+//            location.setText(item.getLocation().split("\\.")[0]);
 
         // set date
         TextView originDate = (TextView) layout.getViewById(R.id.item_template_origin_date);
