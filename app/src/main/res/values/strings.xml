@@ -55,4 +55,7 @@
     <string name="largest_magnitude">Largest Magnitude</string>
     <string name="deepest_earthquake">Deepest Earthquake</string>
     <string name="shallowest_earthquake">Shallowest Earthquake</string>
+
+    <!-- MAP -->
+    <string name="title_activity_maps">Map</string>
 </resources>

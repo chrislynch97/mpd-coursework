@@ -130,6 +130,13 @@ public class Item implements Parcelable {
         return id;
     }
 
+    public String getSnippet() {
+        return "Magnitude: " + magnitude + "\n" +
+                "Category: " + category + "\n" +
+                "Depth: " + depth + "\n" +
+                "Date: " + originDate;
+    }
+
     @Override
     public int describeContents() {
         return 0;

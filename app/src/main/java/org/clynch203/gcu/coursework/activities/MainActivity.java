@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
                         break;
                     case "Map":
                         currentFragment = new MapFragment();
+                        ((MapFragment) currentFragment).setChannelController(channelController);
                         updateToolbar("Map");
                         break;
                     case "About":
