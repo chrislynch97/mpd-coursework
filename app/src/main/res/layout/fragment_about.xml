@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Name                 Christopher Lynch
+    Student ID           S1511825
+    Programme of Study   Computing
+ -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/about"
     android:layout_width="match_parent"
