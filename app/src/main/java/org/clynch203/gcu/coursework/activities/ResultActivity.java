@@ -1,9 +1,14 @@
+//
+// Name                 Christopher Lynch
+// Student ID           S1511825
+// Programme of Study   Computing
+//
+
 package org.clynch203.gcu.coursework.activities;
 
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,44 +20,29 @@ import org.clynch203.gcu.coursework.R;
 import org.clynch203.gcu.coursework.models.Item;
 import org.clynch203.gcu.coursework.util.ObjectToView;
 
+/**
+ * Activity for displaying results of searching between 2 dates.
+ */
 public class ResultActivity extends AppCompatActivity {
+
+    private LinearLayout itemContainer;
+    private LayoutInflater inflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        LinearLayout itemContainer = findViewById(R.id.resultItemActivity);
-        LayoutInflater inflater = getLayoutInflater();
+        itemContainer = findViewById(R.id.resultItemActivity);
+        inflater = getLayoutInflater();
 
         boolean itemsEmpty = getIntent().getBooleanExtra("itemsEmpty", true);
 
         if (itemsEmpty) {
-            ConstraintLayout resultLayout = findViewById(R.id.resultLayout);
-            ScrollView resultScrollView = findViewById(R.id.resultScrollView);
-            resultLayout.removeView(resultScrollView);
-
-            TextView noMatchingText = findViewById(R.id.noMatchingText);
-            noMatchingText.setVisibility(View.VISIBLE);
+            displayNoItems();
         } else {
-            Item mostNorthernItem = getIntent().getExtras().getParcelable("mostNorthernItem");
-            Item mostEasternItem = getIntent().getExtras().getParcelable("mostEasternItem");
-            Item mostSouthernItem = getIntent().getExtras().getParcelable("mostSouthernItem");
-            Item mostWesternItem = getIntent().getExtras().getParcelable("mostWesternItem");
-            Item largestMagnitudeItem = getIntent().getExtras().getParcelable("largestMagnitudeItem");
-            Item deepestItem = getIntent().getExtras().getParcelable("deepestItem");
-            Item shallowestItem = getIntent().getExtras().getParcelable("shallowestItem");
-
-            itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, mostNorthernItem), 1);
-            itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, mostEasternItem), 3);
-            itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, mostSouthernItem), 5);
-            itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, mostWesternItem), 7);
-            itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, largestMagnitudeItem), 9);
-            itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, deepestItem), 11);
-            itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, shallowestItem), 13);
+            displayItems();
         }
-
-
 
         FrameLayout backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +51,45 @@ public class ResultActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    /**
+     * Removes the ScrollLayout containing the headers form the layout
+     * and sets the TextView containing a no matching items string to visible.
+     */
+    private void displayNoItems() {
+        ConstraintLayout resultLayout = findViewById(R.id.resultLayout);
+        ScrollView resultScrollView = findViewById(R.id.resultScrollView);
+        resultLayout.removeView(resultScrollView);
+        TextView noMatchingText = findViewById(R.id.noMatchingText);
+        noMatchingText.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Displays items returned from search.
+     */
+    private void displayItems() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            displayNoItems();
+            return;
+        }
+
+        Item mostNorthernItem = bundle.getParcelable("mostNorthernItem");
+        Item mostEasternItem = bundle.getParcelable("mostEasternItem");
+        Item mostSouthernItem = bundle.getParcelable("mostSouthernItem");
+        Item mostWesternItem = bundle.getParcelable("mostWesternItem");
+        Item largestMagnitudeItem = bundle.getParcelable("largestMagnitudeItem");
+        Item deepestItem = bundle.getParcelable("deepestItem");
+        Item shallowestItem = bundle.getParcelable("shallowestItem");
+
+        itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, mostNorthernItem), 1);
+        itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, mostEasternItem), 3);
+        itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, mostSouthernItem), 5);
+        itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, mostWesternItem), 7);
+        itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, largestMagnitudeItem), 9);
+        itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, deepestItem), 11);
+        itemContainer.addView(ObjectToView.createSimpleItemView(inflater, itemContainer, this, shallowestItem), 13);
     }
 
 }
