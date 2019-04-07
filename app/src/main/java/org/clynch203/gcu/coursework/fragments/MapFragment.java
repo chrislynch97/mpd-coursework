@@ -1,7 +1,9 @@
 package org.clynch203.gcu.coursework.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.clynch203.gcu.coursework.R;
+import org.clynch203.gcu.coursework.activities.ItemActivity;
 import org.clynch203.gcu.coursework.controllers.ChannelController;
 import org.clynch203.gcu.coursework.models.Item;
 
@@ -49,6 +52,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
+                mMap.setOnInfoWindowClickListener(MapFragment.this);
+
                 // For showing a move to my location button
 //                googleMap.setMyLocationEnabled(true);
 
@@ -73,7 +78,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
                     new MarkerOptions()
                             .position(latLng)
                             .title(item.getLocation())
-                            .snippet(item.getSnippet())
             );
             markers.add(marker);
         }
@@ -125,6 +129,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        System.out.println(marker.getId());
+        int backgroundColor = ResourcesCompat.getColor(requireContext().getResources(), R.color.item_2_background, null);
+        int id = Integer.valueOf(marker.getId().substring(1));
+        Item item = channelController.items().get(id);
+        Intent intent = new Intent(requireContext(), ItemActivity.class);
+        intent.putExtra("backgroundColor", backgroundColor);
+        intent.putExtra("item", item);
+        requireContext().startActivity(intent);
     }
 }
