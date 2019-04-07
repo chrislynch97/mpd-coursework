@@ -1,3 +1,9 @@
+//
+// Name                 Christopher Lynch
+// Student ID           S1511825
+// Programme of Study   Computing
+//
+
 package org.clynch203.gcu.coursework.activities;
 
 import android.content.Context;
@@ -13,10 +19,8 @@ import android.widget.ProgressBar;
 
 import org.clynch203.gcu.coursework.R;
 import org.clynch203.gcu.coursework.util.FileHandler;
-import static org.clynch203.gcu.coursework.util.Constants.*;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
@@ -24,6 +28,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import static org.clynch203.gcu.coursework.util.Constants.DATA_FILENAME;
+import static org.clynch203.gcu.coursework.util.Constants.DATA_URL;
+
+/**
+ * Entry point for the application.
+ * Displays launch screen while loading required data.
+ */
 public class LaunchActivity extends AppCompatActivity {
 
     @Override
@@ -38,6 +49,11 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Called if the device doesn't have a network connection.
+     * Attempts to load data from file on decide, otherwise
+     * quits the application.
+     */
     private void loadData() {
         if (FileHandler.fileExists(this, DATA_FILENAME)) {
 
@@ -74,6 +90,11 @@ public class LaunchActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if device has a network connection.
+     *
+     * @return true if has a connection.
+     */
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -106,7 +127,7 @@ public class LaunchActivity extends AppCompatActivity {
             result = new StringBuilder();
 
             try {
-                url = new URL("http://quakes.bgs.ac.uk/feeds/MhSeismology.xml");
+                url = new URL(DATA_URL);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -127,11 +148,14 @@ public class LaunchActivity extends AppCompatActivity {
                 in.readLine();
                 in.readLine();
 
-                int totalLines = 690; // roughly how many lines are in the XML file. Would use connection.ContentLength() but returns -1
+                // roughly how many lines are in the XML file. Would use connection.ContentLength() but returns -1
+                // used to calculate percentage complete of download
+                int totalLines = 690;
 
                 while ((line = in.readLine()) != null) {
                     if (line.equalsIgnoreCase("</rss>")) break;
 
+                    // the ':' in the tag caused issues with the XML parser so remove them here
                     line = line.replace("geo:lat", "lat");
                     line = line.replace("geo:long", "lon");
 
@@ -139,7 +163,7 @@ public class LaunchActivity extends AppCompatActivity {
 
                     progressStatus++;
                     double d = ((double) progressStatus / (double) totalLines) * 100;
-                    publishProgress((int)d);
+                    publishProgress((int) d);
                 }
 
                 in.close();
@@ -163,6 +187,8 @@ public class LaunchActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
+            // once the data has been loaded, add it to an intent and load
+            // the MainActivity
             if (!this.result.toString().equals("")) {
                 Intent intent = new Intent(activityReference.get(), MainActivity.class);
                 intent.putExtra("data", this.result.toString());

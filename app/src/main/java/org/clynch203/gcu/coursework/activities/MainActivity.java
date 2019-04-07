@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
     }
 
     /**
-     * Called when Toolbar option is selcted.
+     * Called when Toolbar option is selected.
      *
      * @param item The item selected on the Toolbar.
      */
