@@ -23,6 +23,15 @@ public abstract class ObjectToView {
             final ViewGroup itemContainer,
             final Context context,
             final Item item) {
+        return createSimpleItemView(inflater, itemContainer, context, item, false);
+    }
+
+    public static ConstraintLayout createSimpleItemView(
+            final LayoutInflater inflater,
+            final ViewGroup itemContainer,
+            final Context context,
+            final Item item,
+            final boolean startWithResult) {
 
         ConstraintLayout layout = (ConstraintLayout) inflater
                 .inflate(R.layout.template_item_simple, itemContainer, false);
@@ -74,16 +83,18 @@ public abstract class ObjectToView {
 
         layout.setBackgroundColor(backgroundColor);
 
-        final int finalBackgroundColor = backgroundColor;
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ItemActivity.class);
-                intent.putExtra("backgroundColor", finalBackgroundColor);
-                intent.putExtra("item", item);
-                context.startActivity(intent);
-            }
-        });
+        if (!startWithResult) {
+            final int finalBackgroundColor = backgroundColor;
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ItemActivity.class);
+                    intent.putExtra("backgroundColor", finalBackgroundColor);
+                    intent.putExtra("item", item);
+                    context.startActivity(intent);
+                }
+            });
+        }
 
         return layout;
     }

@@ -15,6 +15,7 @@
     </FrameLayout>
 
     <TableLayout
+        android:id="@+id/itemTable"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -163,4 +164,13 @@
 
     </TableLayout>
 
+    <Button
+        android:id="@+id/viewOnMapButton"
+        app:layout_constraintTop_toBottomOf="@id/itemTable"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/view_on_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </android.support.constraint.ConstraintLayout>

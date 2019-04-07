@@ -11,12 +11,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import org.clynch203.gcu.coursework.R;
+import org.clynch203.gcu.coursework.activities.ItemActivity;
+import org.clynch203.gcu.coursework.activities.MainActivity;
 import org.clynch203.gcu.coursework.activities.ResultActivity;
 import org.clynch203.gcu.coursework.controllers.ChannelController;
 import org.clynch203.gcu.coursework.models.Item;
 import org.clynch203.gcu.coursework.util.ObjectToView;
 
 import java.util.ArrayList;
+
+import static org.clynch203.gcu.coursework.util.Constants.ITEM_ACTIVITY_REQUEST_CODE;
 
 public class HomeFragment extends Fragment {
 
@@ -39,7 +43,7 @@ public class HomeFragment extends Fragment {
 
     private ConstraintLayout createItemView(final Item item) {
         LayoutInflater inflater = getLayoutInflater();
-        ConstraintLayout layout = ObjectToView.createSimpleItemView(inflater, itemContainer, requireActivity(), item);
+        ConstraintLayout layout = ObjectToView.createSimpleItemView(inflater, itemContainer, requireActivity(), item, true);
 
         int backgroundColor = ResourcesCompat.getColor(getResources(), R.color.item_1_background, null);
         switch (currentItemCount) {
@@ -61,6 +65,18 @@ public class HomeFragment extends Fragment {
         }
 
         layout.setBackgroundColor(backgroundColor);
+
+        final int finalBackgroundColor = backgroundColor;
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), ItemActivity.class);
+                intent.putExtra("backgroundColor", finalBackgroundColor);
+                intent.putExtra("item", item);
+                startActivityForResult(intent, ITEM_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
         return layout;
     }
 
@@ -111,5 +127,11 @@ public class HomeFragment extends Fragment {
 
         }
         startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ((MainActivity) requireActivity()).activityResult(requestCode, resultCode, data);
     }
 }

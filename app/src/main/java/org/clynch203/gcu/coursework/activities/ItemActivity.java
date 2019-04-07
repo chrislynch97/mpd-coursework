@@ -1,10 +1,12 @@
 package org.clynch203.gcu.coursework.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import org.clynch203.gcu.coursework.models.Item;
 public class ItemActivity extends AppCompatActivity {
 
     private Item item;
+    private Button viewOnMapButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,17 @@ public class ItemActivity extends AppCompatActivity {
         item = getIntent().getExtras().getParcelable("item");
 
         displayItemData();
+
+        viewOnMapButton = findViewById(R.id.viewOnMapButton);
+        viewOnMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("item", item);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
         FrameLayout backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {

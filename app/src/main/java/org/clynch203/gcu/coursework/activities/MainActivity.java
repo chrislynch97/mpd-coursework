@@ -3,6 +3,7 @@ package org.clynch203.gcu.coursework.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,11 +23,15 @@ import org.clynch203.gcu.coursework.fragments.AboutFragment;
 import org.clynch203.gcu.coursework.fragments.DateRangeFragment;
 import org.clynch203.gcu.coursework.fragments.HomeFragment;
 import org.clynch203.gcu.coursework.fragments.MapFragment;
+import org.clynch203.gcu.coursework.models.Item;
 import org.clynch203.gcu.coursework.util.XMLParser;
+
+import static org.clynch203.gcu.coursework.util.Constants.ITEM_ACTIVITY_REQUEST_CODE;
 
 public class MainActivity extends AppCompatActivity implements DateRangeFragment.InterfaceCommunicator {
 
     private ChannelController channelController;
+    private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Fragment currentFragment;
     private Toolbar toolbar;
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
     }
 
     private void initialiseNavigationDrawer() {
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -159,5 +164,34 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
         if (currentFragment instanceof HomeFragment) {
             ((HomeFragment)currentFragment).sendRequest(requestIntent);
         }
+    }
+
+    public void activityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ITEM_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    Bundle bundle = data.getExtras();
+                    if (bundle != null) {
+                        Item item = bundle.getParcelable("item");
+                        if (item != null) {
+                            currentFragment = new MapFragment();
+                            ((MapFragment) currentFragment).setChannelController(channelController);
+                            ((MapFragment) currentFragment).setTargetItem(item);
+                            updateToolbar("Map");
+                            navigationView.getMenu().getItem(1).setChecked(true);
+
+                            FragmentManager fragmentManager = getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.content_frame, currentFragment);
+                            fragmentTransaction.commit();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void showItemOnMap() {
+
     }
 }

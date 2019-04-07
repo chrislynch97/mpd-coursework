@@ -32,6 +32,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
     MapView mMapView;
     private GoogleMap googleMap;
     ChannelController channelController;
+    private Item targetItem;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootVew = inflater.inflate(R.layout.fragment_map, container, false);
@@ -79,6 +80,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
                             .position(latLng)
                             .title(item.getLocation())
             );
+
+            if (targetItem != null) {
+                if (item.getId() == targetItem.getId()) {
+                    marker.showInfoWindow();
+                }
+            }
+
             markers.add(marker);
         }
 
@@ -91,6 +99,10 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         int padding = 0; // offset from edges of the map in pixels
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         googleMap.animateCamera(cameraUpdate);
+    }
+
+    public void setTargetItem(Item targetItem) {
+        this.targetItem = targetItem;
     }
 
     @Override
