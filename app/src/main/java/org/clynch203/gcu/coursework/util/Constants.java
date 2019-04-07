@@ -1,3 +1,9 @@
+//
+// Name                 Christopher Lynch
+// Student ID           S1511825
+// Programme of Study   Computing
+//
+
 package org.clynch203.gcu.coursework.util;
 
 public final class Constants {

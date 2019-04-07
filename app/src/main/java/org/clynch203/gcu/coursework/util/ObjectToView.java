@@ -1,3 +1,9 @@
+//
+// Name                 Christopher Lynch
+// Student ID           S1511825
+// Programme of Study   Computing
+//
+
 package org.clynch203.gcu.coursework.util;
 
 import android.content.Context;
@@ -16,8 +22,20 @@ import org.clynch203.gcu.coursework.models.Item;
 
 import java.text.DecimalFormat;
 
+/**
+ * Class used to create Views from Item objects.
+ */
 public abstract class ObjectToView {
 
+    /**
+     * Create a ConstraintLayout from an Item object.
+     *
+     * @param inflater      Inflater from calling Activity.
+     * @param itemContainer Containing View.
+     * @param context       Context from calling Activity.
+     * @param item          Item to convert.
+     * @return ConstraintLayout.
+     */
     public static ConstraintLayout createSimpleItemView(
             final LayoutInflater inflater,
             final ViewGroup itemContainer,
@@ -26,6 +44,18 @@ public abstract class ObjectToView {
         return createSimpleItemView(inflater, itemContainer, context, item, false);
     }
 
+    /**
+     * Create a ConstraintLayout from an Item object.
+     *
+     * @param inflater        Inflater from calling Activity.
+     * @param itemContainer   Containing View.
+     * @param context         Context from calling Activity.
+     * @param item            Item to convert.
+     * @param startWithResult Boolean if item is to be called with results.
+     *                        If true item will not have an onClick listener attached.
+     *                        If false onClick will be attached.
+     * @return ConstraintLayout.
+     */
     public static ConstraintLayout createSimpleItemView(
             final LayoutInflater inflater,
             final ViewGroup itemContainer,
@@ -38,27 +68,17 @@ public abstract class ObjectToView {
 
         DecimalFormat format = new DecimalFormat("###.##");
 
-        int backgroundColor = ResourcesCompat.getColor(context.getResources(), R.color.item_2_background, null);
+        final int backgroundColor = ResourcesCompat.getColor(context.getResources(), R.color.item_2_background, null);
+        layout.setBackgroundColor(backgroundColor);
 
-        // set location
-        TextView location = (TextView) layout.getViewById(R.id.item_template_location);
-        location.setText(item.getLocation());
-//        if (item.getLocation().contains(","))
-//            location.setText(item.getLocation().split(",")[0]);
-//        else
-//            location.setText(item.getLocation().split("\\.")[0]);
+        ((TextView) layout.getViewById(R.id.item_template_location)).setText(item.getLocation());
+        ((TextView) layout.getViewById(R.id.item_template_origin_date)).setText(item.getOriginDateString());
+        ((TextView) layout.getViewById(R.id.item_template_depth)).setText(String.format(context.getResources().getString(R.string.item_depth), item.getDepth()));
+        ((TextView) layout.getViewById(R.id.item_template_magnitude)).setText(format.format(item.getMagnitude()));
+        ((TextView) layout.getViewById(R.id.item_template_category)).setText(String.format(context.getResources().getString(R.string.item_category), item.getCategory()));
 
-        // set date
-        TextView originDate = (TextView) layout.getViewById(R.id.item_template_origin_date);
-        originDate.setText(item.getOriginDateString());
-
-        // set depth
-        TextView depth = (TextView) layout.getViewById(R.id.item_template_depth);
-        depth.setText(String.format(context.getResources().getString(R.string.item_depth), item.getDepth()));
-
-        // set scale
         ImageView scale = (ImageView) layout.getViewById(R.id.item_template_scale);
-        double mag = item.getMagnitude();
+        final double mag = item.getMagnitude();
         if (mag >= 8) {
             scale.setImageResource(R.drawable.scale_great);
         } else if (mag >= 7 && mag <= 7.9) {
@@ -73,23 +93,12 @@ public abstract class ObjectToView {
             scale.setImageResource(R.drawable.scale_minor);
         }
 
-        // set magnitude
-        TextView magnitude = (TextView) layout.getViewById(R.id.item_template_magnitude);
-        magnitude.setText(format.format(item.getMagnitude()));
-
-        // set category
-        TextView category = (TextView) layout.getViewById(R.id.item_template_category);
-        category.setText(String.format(context.getResources().getString(R.string.item_category), item.getCategory()));
-
-        layout.setBackgroundColor(backgroundColor);
-
         if (!startWithResult) {
-            final int finalBackgroundColor = backgroundColor;
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ItemActivity.class);
-                    intent.putExtra("backgroundColor", finalBackgroundColor);
+                    intent.putExtra("backgroundColor", backgroundColor);
                     intent.putExtra("item", item);
                     context.startActivity(intent);
                 }

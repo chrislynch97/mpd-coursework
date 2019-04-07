@@ -1,3 +1,9 @@
+//
+// Name                 Christopher Lynch
+// Student ID           S1511825
+// Programme of Study   Computing
+//
+
 package org.clynch203.gcu.coursework.util;
 
 import org.clynch203.gcu.coursework.models.Channel;
@@ -14,23 +20,35 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Class for parsing XML data into Channel, Image, and Item objects.
+ */
 public abstract class XMLParser {
 
     public static Channel parseData(String dataToParse) {
         Channel channel = null;
         Image image = null;
         Item item = null;
+
         String pattern = "EEE, dd MMM yyyy HH:mm:ss";
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.UK);
 
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
+
             XmlPullParser xpp = factory.newPullParser();
             xpp.setInput(new StringReader(dataToParse));
+
             int eventType = xpp.getEventType();
+
+            // used to keep track of current type, Channel, Image, or Item
+            // as there are some tags inside each, i.e. all 3 have a title tag
             String type = "";
+
             int itemCount = 0;
+
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
                     switch (xpp.getName().toLowerCase()) {
