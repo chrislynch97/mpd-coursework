@@ -20,6 +20,7 @@ import org.clynch203.gcu.coursework.util.ObjectToView;
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
 import static org.clynch203.gcu.coursework.util.Constants.ITEM_ACTIVITY_REQUEST_CODE;
 
 public class HomeFragment extends Fragment {
@@ -132,6 +133,20 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ((MainActivity) requireActivity()).activityResult(requestCode, resultCode, data);
+        Bundle bundle;
+        Item item;
+
+        if (requestCode == ITEM_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    if ((bundle = data.getExtras()) != null) {
+                        if ((item = bundle.getParcelable("item")) != null) {
+                            ((MainActivity) requireActivity()).displayItemOnMap(item);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

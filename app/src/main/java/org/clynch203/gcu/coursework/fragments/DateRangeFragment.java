@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static org.clynch203.gcu.coursework.util.Constants.DATE_RANGE_FRAGMENT_REQUEST_CODE;
+
 public class DateRangeFragment extends DialogFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener{
 
     private TextView startDate;
@@ -112,7 +114,7 @@ public class DateRangeFragment extends DialogFragment implements View.OnClickLis
         intent.putExtra("startDate", startDate.getText());
         intent.putExtra("endDate", endDate.getText());
 
-        interfaceCommunicator.sendRequest(1, intent);
+        interfaceCommunicator.sendRequest(DATE_RANGE_FRAGMENT_REQUEST_CODE, intent);
     }
 
     @Override
