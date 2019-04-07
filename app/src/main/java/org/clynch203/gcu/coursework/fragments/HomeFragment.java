@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
 
     private ChannelController channelController;
     private LinearLayout itemContainer;
-    private int currentItemCount = 0;
+    private int currentItemCount;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,6 +110,7 @@ public class HomeFragment extends Fragment {
      * @param items ArrayList of Items to display.
      */
     public void displayItems(final ArrayList<Item> items) {
+        currentItemCount = 0;
         ArrayList<ConstraintLayout> layouts = new ArrayList<>();
         for (Item item : items)
             layouts.add(createItemView(item));

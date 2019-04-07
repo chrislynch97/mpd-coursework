@@ -28,7 +28,11 @@ import org.clynch203.gcu.coursework.fragments.DateRangeFragment;
 import org.clynch203.gcu.coursework.fragments.HomeFragment;
 import org.clynch203.gcu.coursework.fragments.MapFragment;
 import org.clynch203.gcu.coursework.models.Item;
+import org.clynch203.gcu.coursework.util.DownloadTask;
 import org.clynch203.gcu.coursework.util.XMLParser;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static org.clynch203.gcu.coursework.util.Constants.DATE_RANGE_FRAGMENT_REQUEST_CODE;
 
@@ -73,6 +77,35 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
         navigationView.setNavigationItemSelectedListener(this);
 
         setCurrentFragment("Home");
+
+        // runs download task every minute
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                new DownloadTask(MainActivity.this).execute();
+            }
+        };
+
+        timer.schedule(timerTask, 60000, 60000);
+    }
+
+    /**
+     * Updates channelController and required Fragments.
+     * Called when DownloadTask is finished.
+     *
+     * @param channelController New channelController.
+     */
+    public void updateChannelController(ChannelController channelController) {
+        this.channelController = channelController;
+
+        if (currentFragment instanceof HomeFragment) {
+            ((HomeFragment) currentFragment).setChannelController(channelController);
+            ((HomeFragment) currentFragment).displayItems(channelController.items());
+        } else if (currentFragment instanceof MapFragment) {
+            ((MapFragment) currentFragment).setChannelController(channelController);
+            ((MapFragment) currentFragment).updateMarkers();
+        }
     }
 
     /**

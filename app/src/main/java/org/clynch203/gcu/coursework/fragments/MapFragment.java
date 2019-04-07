@@ -42,6 +42,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
     ChannelController channelController;
     private GoogleMap googleMap;
     private Item targetItem;
+    private ArrayList<Marker> markers;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootVew = inflater.inflate(R.layout.fragment_map, container, false);
@@ -66,7 +67,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
      * Displays a marker for all Items on the map.
      */
     private void displayMarkers() {
-        ArrayList<Marker> markers = new ArrayList<>(channelController.items().size());
+        markers = new ArrayList<>(channelController.items().size());
         LatLng latLng;
 
         for (Item item : channelController.items()) {
@@ -87,17 +88,11 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
 
             markers.add(marker);
         }
+    }
 
-        // position the camera to view all markers
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : markers) {
-            builder.include(marker.getPosition());
-        }
-        LatLngBounds bounds = builder.build();
-
-        int padding = 250; // offset from edges of the map in pixels
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        googleMap.animateCamera(cameraUpdate);
+    public void updateMarkers() {
+        googleMap.clear();
+        displayMarkers();
     }
 
     public void setTargetItem(Item targetItem) {
@@ -160,5 +155,16 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         googleMap = mMap;
         mMap.setOnInfoWindowClickListener(MapFragment.this);
         displayMarkers();
+
+        // position the camera to view all markers
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : markers) {
+            builder.include(marker.getPosition());
+        }
+        LatLngBounds bounds = builder.build();
+
+        int padding = 250; // offset from edges of the map in pixels
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        googleMap.animateCamera(cameraUpdate);
     }
 }
