@@ -1,16 +1,39 @@
+//
+// Name                 Christopher Lynch
+// Student ID           S1511825
+// Programme of Study   Computing
+//
+
 package org.clynch203.gcu.coursework.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+/**
+ * Item Model for all Items in the XML data.
+ * Uses Parcelable interface to pass Item objects between Activities.
+ */
 public class Item implements Parcelable {
 
-    private static final String pattern = "EEE, dd MMM yyyy HH:mm:ss";
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
 
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+
+    };
+    private static final String pattern = "EEE, dd MMM yyyy HH:mm:ss";
+    private final int id;
     private String title;
     private String description;
     private String link;
@@ -22,10 +45,24 @@ public class Item implements Parcelable {
     private double magnitude;
     private int depth;
     private Date originDate;
-    private final int id;
 
     public Item(final int id) {
         this.id = id;
+    }
+
+    private Item(Parcel in) {
+        this.title = in.readString();
+        this.description = in.readString();
+        this.link = in.readString();
+        this.pubDate = new Date(in.readLong());
+        this.category = in.readString();
+        this.lat = in.readDouble();
+        this.lon = in.readDouble();
+        this.location = in.readString();
+        this.magnitude = in.readDouble();
+        this.depth = in.readInt();
+        this.originDate = new Date(in.readLong());
+        this.id = in.readInt();
     }
 
     public String getTitle() {
@@ -36,24 +73,12 @@ public class Item implements Parcelable {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getLink() {
-        return link;
-    }
-
     public void setLink(String link) {
         this.link = link;
-    }
-
-    public Date getPubDate() {
-        return pubDate;
     }
 
     public void setPubDate(Date pubDate) {
@@ -61,7 +86,7 @@ public class Item implements Parcelable {
     }
 
     public String getPubDateString() {
-        DateFormat format = new SimpleDateFormat(pattern);
+        DateFormat format = new SimpleDateFormat(pattern, Locale.UK);
         return format.format(pubDate);
     }
 
@@ -122,19 +147,12 @@ public class Item implements Parcelable {
     }
 
     public String getOriginDateString() {
-        DateFormat format = new SimpleDateFormat(pattern);
+        DateFormat format = new SimpleDateFormat(pattern, Locale.UK);
         return format.format(originDate);
     }
 
     public int getId() {
         return id;
-    }
-
-    public String getSnippet() {
-        return "Magnitude: " + magnitude + "\n" +
-                "Category: " + category + "\n" +
-                "Depth: " + depth + "\n" +
-                "Date: " + originDate;
     }
 
     @Override
@@ -158,34 +176,8 @@ public class Item implements Parcelable {
         dest.writeInt(id);
     }
 
-    private Item(Parcel in) {
-        this.title = in.readString();
-        this.description = in.readString();
-        this.link = in.readString();
-        this.pubDate = new Date(in.readLong());
-        this.category = in.readString();
-        this.lat = in.readDouble();
-        this.lon = in.readDouble();
-        this.location = in.readString();
-        this.magnitude = in.readDouble();
-        this.depth = in.readInt();
-        this.originDate = new Date(in.readLong());
-        this.id = in.readInt();
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
-        }
-
-        public Item[] newArray(int size) {
-            return new Item[size];
-        }
-
-    };
-
     @Override
+    @NonNull
     public String toString() {
         return "Item{" +
                 "title='" + title + '\'' +
