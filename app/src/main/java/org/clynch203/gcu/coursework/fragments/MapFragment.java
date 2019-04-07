@@ -1,7 +1,14 @@
+//
+// Name                 Christopher Lynch
+// Student ID           S1511825
+// Programme of Study   Computing
+//
+
 package org.clynch203.gcu.coursework.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
@@ -14,7 +21,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -27,20 +33,23 @@ import org.clynch203.gcu.coursework.models.Item;
 
 import java.util.ArrayList;
 
-public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClickListener {
+/**
+ * Fragment for displaying GoogleMap with markers for all Items.
+ */
+public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     MapView mMapView;
-    private GoogleMap googleMap;
     ChannelController channelController;
+    private GoogleMap googleMap;
     private Item targetItem;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootVew = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapView = rootVew.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
-        mMapView.onResume(); // needed to get the map to display immeadiately
+        mMapView.onResume(); // needed to get the map to display immediately
 
         try {
             MapsInitializer.initialize(requireActivity().getApplicationContext());
@@ -48,39 +57,28 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
             e.printStackTrace();
         }
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-
-                mMap.setOnInfoWindowClickListener(MapFragment.this);
-
-                // For showing a move to my location button
-//                googleMap.setMyLocationEnabled(true);
-
-                displayMarkers();
-
-                // For zooming automatically to the location of the marker
-//                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-//                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            }
-        });
+        mMapView.getMapAsync(this);
 
         return rootVew;
     }
 
+    /**
+     * Displays a marker for all Items on the map.
+     */
     private void displayMarkers() {
         ArrayList<Marker> markers = new ArrayList<>(channelController.items().size());
         LatLng latLng;
+
         for (Item item : channelController.items()) {
             latLng = new LatLng(item.getLat(), item.getLon());
+
             Marker marker = googleMap.addMarker(
                     new MarkerOptions()
                             .position(latLng)
                             .title(item.getLocation())
             );
 
+            // if a target item has been passed in then open it's information window
             if (targetItem != null) {
                 if (item.getId() == targetItem.getId()) {
                     marker.showInfoWindow();
@@ -90,13 +88,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
             markers.add(marker);
         }
 
+        // position the camera to view all markers
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Marker marker : markers) {
             builder.include(marker.getPosition());
         }
         LatLngBounds bounds = builder.build();
 
-        int padding = 0; // offset from edges of the map in pixels
+        int padding = 250; // offset from edges of the map in pixels
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         googleMap.animateCamera(cameraUpdate);
     }
@@ -139,6 +138,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         this.channelController = channelController;
     }
 
+    /**
+     * Called when a marker's information window is clicked.
+     * Goes to ItemActivity for the associated item.
+     *
+     * @param marker Marker that was clicked.
+     */
     @Override
     public void onInfoWindowClick(Marker marker) {
         int backgroundColor = ResourcesCompat.getColor(requireContext().getResources(), R.color.item_2_background, null);
@@ -148,5 +153,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         intent.putExtra("backgroundColor", backgroundColor);
         intent.putExtra("item", item);
         requireContext().startActivity(intent);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap mMap) {
+        googleMap = mMap;
+        mMap.setOnInfoWindowClickListener(MapFragment.this);
+        displayMarkers();
     }
 }

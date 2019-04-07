@@ -1,3 +1,9 @@
+//
+// Name                 Christopher Lynch
+// Student ID           S1511825
+// Programme of Study   Computing
+//
+
 package org.clynch203.gcu.coursework.fragments;
 
 import android.app.AlertDialog;
@@ -20,20 +26,25 @@ import android.widget.TextView;
 import org.clynch203.gcu.coursework.R;
 import org.clynch203.gcu.coursework.activities.ResultActivity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import static org.clynch203.gcu.coursework.util.Constants.DATE_RANGE_FRAGMENT_REQUEST_CODE;
 
-public class DateRangeFragment extends DialogFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener{
+/**
+ * Fragment for displaying a Dialog to select a start and end date for search.
+ */
+public class DateRangeFragment extends DialogFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
+    public InterfaceCommunicator interfaceCommunicator;
     private TextView startDate;
     private TextView endDate;
     private boolean settingStartDate;
     private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
     private Calendar calendar;
-    public InterfaceCommunicator interfaceCommunicator;
 
     @NonNull
     @Override
@@ -64,9 +75,9 @@ public class DateRangeFragment extends DialogFragment implements View.OnClickLis
             @Override
             public void onShow(DialogInterface d) {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).
-                        setTextColor(ContextCompat.getColor(requireContext(),R.color.dialog_positive_button_text));
+                        setTextColor(ContextCompat.getColor(requireContext(), R.color.dialog_positive_button_text));
                 dialog.getButton(AlertDialog.BUTTON_NEGATIVE).
-                        setTextColor(ContextCompat.getColor(requireContext(),R.color.dialog_negative_button_text));
+                        setTextColor(ContextCompat.getColor(requireContext(), R.color.dialog_negative_button_text));
             }
         });
 
@@ -94,6 +105,9 @@ public class DateRangeFragment extends DialogFragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Displays a DatePickerDialog with the current date selected.
+     */
     private void showDatePicker() {
         calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -109,12 +123,65 @@ public class DateRangeFragment extends DialogFragment implements View.OnClickLis
         dialog.show();
     }
 
+    /**
+     * Called when the submit button is clicked for the fragment.
+     * Passes the startDate and endDate back to the calling activity/fragment.
+     */
     private void submitDialog() {
+        if (!datesValid()) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(requireContext());
+            dialogBuilder.setMessage("Selected dates are not valid.")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog alert = dialogBuilder.create();
+            alert.show();
+
+            return;
+        }
         Intent intent = new Intent(requireActivity(), ResultActivity.class);
         intent.putExtra("startDate", startDate.getText());
         intent.putExtra("endDate", endDate.getText());
-
         interfaceCommunicator.sendRequest(DATE_RANGE_FRAGMENT_REQUEST_CODE, intent);
+    }
+
+    /**
+     * Checks if the startDate and endDate are valid
+     *
+     * @return true if valid, otherwise false.
+     */
+    private boolean datesValid() {
+        boolean valid = false;
+
+        Date sDate = null;
+        Date eDate = null;
+        Date tomorrow;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
+        tomorrow = calendar.getTime();
+
+        if (startDate != null) {
+            try {
+                sDate = format.parse(String.valueOf(startDate.getText()));
+                eDate = format.parse(String.valueOf(endDate.getText()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (sDate != null && eDate != null) {
+            if (sDate.before(tomorrow) && eDate.before(tomorrow) && (sDate.before(eDate) || sDate.equals(eDate))) {
+                valid = true;
+            }
+        }
+
+
+        return valid;
     }
 
     @Override
@@ -123,6 +190,14 @@ public class DateRangeFragment extends DialogFragment implements View.OnClickLis
         interfaceCommunicator = (InterfaceCommunicator) context;
     }
 
+    /**
+     * Called when DatePickerDialog is closed.
+     *
+     * @param view       The DatePicker view.
+     * @param year       The year that was selected.
+     * @param month      The month that was selected.
+     * @param dayOfMonth The day of the month that was selected.
+     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         calendar = Calendar.getInstance();
@@ -135,6 +210,9 @@ public class DateRangeFragment extends DialogFragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Interface used to pass startDate and endDate back to calling activity/fragment.
+     */
     public interface InterfaceCommunicator {
         void sendRequest(int code, Intent intent);
     }
