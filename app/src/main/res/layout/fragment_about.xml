@@ -4,8 +4,7 @@
     Student ID           S1511825
     Programme of Study   Computing
  -->
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/about"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,10 +14,8 @@
     android:background="@color/about_background">
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/moduleNameText"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:textSize="20sp"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
@@ -27,10 +24,8 @@
         android:text="@string/module_name"/>
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/appNameText"
-        app:layout_constraintTop_toBottomOf="@id/moduleNameText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:textSize="20sp"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
@@ -39,10 +34,8 @@
         android:text="@string/app_name"/>
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/studentText"
-        app:layout_constraintTop_toBottomOf="@id/appNameText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:textSize="20sp"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
@@ -50,4 +43,4 @@
         android:layout_height="wrap_content"
         android:text="@string/student"/>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
