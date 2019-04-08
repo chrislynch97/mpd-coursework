@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Name                 Christopher Lynch
+    Student ID           S1511825
+    Programme of Study   Computing
+ -->
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_template"
+    android:layout_width="fill_parent"
+    android:layout_height="145dp">
+
+    <ImageView
+        android:id="@+id/item_template_scale"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="30dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/item_template_magnitude"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/item_template_scale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textSize="12sp"
+        android:textColor="@color/home_item_text"/>
+
+    <TextView
+        android:id="@+id/item_template_location"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/item_template_scale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="50dp"
+        android:textSize="18sp"
+        android:textColor="@color/home_item_text"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/item_template_origin_date"
+        app:layout_constraintTop_toTopOf="@id/item_template_location"
+        app:layout_constraintLeft_toRightOf="@id/item_template_location"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/home_item_text"/>
+
+    <TextView
+        android:id="@+id/item_template_depth"
+        app:layout_constraintTop_toBottomOf="@+id/item_template_location"
+        app:layout_constraintLeft_toLeftOf="@id/item_template_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/home_item_text"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/item_template_category"
+        app:layout_constraintTop_toTopOf="@id/item_template_depth"
+        app:layout_constraintLeft_toLeftOf="@id/item_template_origin_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/home_item_text"/>
+
+</android.support.constraint.ConstraintLayout>
