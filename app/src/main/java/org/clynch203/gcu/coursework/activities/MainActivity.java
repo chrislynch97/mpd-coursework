@@ -83,7 +83,9 @@ public class MainActivity extends AppCompatActivity implements DateRangeFragment
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                new DownloadTask(MainActivity.this).execute();
+                if (DownloadTask.isNetworkAvailable(MainActivity.this)) {
+                    new DownloadTask(MainActivity.this).execute();
+                }
             }
         };
 

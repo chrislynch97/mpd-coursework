@@ -5,7 +5,10 @@
 //
 package org.clynch203.gcu.coursework.util;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
@@ -35,6 +38,24 @@ public class DownloadTask extends AsyncTask<Void, Integer, Void> {
 
     public DownloadTask(AppCompatActivity context) {
         activityReference = new WeakReference<>(context);
+    }
+
+    /**
+     * Checks if device has a network connection.
+     *
+     * @return true if has a connection.
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = null;
+
+        if (connectivityManager != null) {
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
+
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     @Override
@@ -115,7 +136,7 @@ public class DownloadTask extends AsyncTask<Void, Integer, Void> {
                 intent.putExtra("data", this.result.toString());
                 activityReference.get().startActivity(intent);
                 activityReference.get().finish();
-            } else if (activityReference.get() instanceof  MainActivity) {
+            } else if (activityReference.get() instanceof MainActivity) {
                 ChannelController channelController = new ChannelController(XMLParser.parseData(this.result.toString()));
                 ((MainActivity) activityReference.get()).updateChannelController(channelController);
             }

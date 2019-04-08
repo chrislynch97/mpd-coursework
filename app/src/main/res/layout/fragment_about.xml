@@ -4,7 +4,8 @@
     Student ID           S1511825
     Programme of Study   Computing
  -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/about"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,36 +15,50 @@
     android:background="@color/about_background">
 
     <TextView
+        android:id="@+id/moduleNameText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:textSize="20sp"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/module_name"/>
 
     <TextView
+        android:id="@+id/appNameText"
+        app:layout_constraintTop_toBottomOf="@id/moduleNameText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:textSize="20sp"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"/>
 
     <TextView
+        android:id="@+id/studentText"
+        app:layout_constraintTop_toBottomOf="@id/appNameText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:textSize="20sp"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/student"/>
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/lastUpdatedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/image_description" />
+        android:textAlignment="center"
+        android:layout_gravity="center"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

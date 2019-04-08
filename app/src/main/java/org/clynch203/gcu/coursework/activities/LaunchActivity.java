@@ -6,11 +6,8 @@
 
 package org.clynch203.gcu.coursework.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +29,7 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
-        if (isNetworkAvailable()) {
+        if (DownloadTask.isNetworkAvailable(this)) {
             new DownloadTask(this).execute();
         } else {
             loadData();
@@ -78,23 +75,5 @@ public class LaunchActivity extends AppCompatActivity {
             AlertDialog alert = dialogBuilder.create();
             alert.show();
         }
-    }
-
-    /**
-     * Checks if device has a network connection.
-     *
-     * @return true if has a connection.
-     */
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = null;
-
-        if (connectivityManager != null) {
-            networkInfo = connectivityManager.getActiveNetworkInfo();
-        }
-
-        return networkInfo != null && networkInfo.isConnected();
     }
 }
