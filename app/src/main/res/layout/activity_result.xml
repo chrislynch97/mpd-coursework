@@ -68,6 +68,13 @@
                 app:layout_constraintStart_toStartOf="parent">
                 <TextView style="@style/ResultTitleText" android:text="@string/shallowest_earthquake" />
             </LinearLayout>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/student"
+                android:textAlignment="center"/>
         </LinearLayout>
     </ScrollView>
 
@@ -81,5 +88,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_matching"/>
+
+    <TextView
+        android:id="@+id/noMatchingStudent"
+        app:layout_constraintTop_toBottomOf="@id/noMatchingText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/student"
+        android:textAlignment="center"/>
 
 </android.support.constraint.ConstraintLayout>

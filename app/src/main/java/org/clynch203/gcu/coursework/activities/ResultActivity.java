@@ -61,8 +61,8 @@ public class ResultActivity extends AppCompatActivity {
         ConstraintLayout resultLayout = findViewById(R.id.resultLayout);
         ScrollView resultScrollView = findViewById(R.id.resultScrollView);
         resultLayout.removeView(resultScrollView);
-        TextView noMatchingText = findViewById(R.id.noMatchingText);
-        noMatchingText.setVisibility(View.VISIBLE);
+        findViewById(R.id.noMatchingText).setVisibility(View.VISIBLE);
+        findViewById(R.id.noMatchingStudent).setVisibility(View.VISIBLE);
     }
 
     /**
